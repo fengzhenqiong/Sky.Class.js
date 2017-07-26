@@ -4,9 +4,9 @@ This is a simple single inheritance javascript framework
 It's really simple to use it, just add the Sky.Class.js file reference, and then use it like:<br />
 
 ```JavaScript
-var cls = new Class();
-var cls = Class();
-var cls = Class.extend();
+var cls = new Class(/*parentClass, mixins...*/);
+var cls = Class(/*parentClass, mixins...*/);
+var cls = Class.extend(/*parentClass, mixins...*/);
 ```
 
 The above two class definition are equivalent, it creates a class with a default initialize method.<br />
