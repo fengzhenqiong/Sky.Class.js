@@ -11,7 +11,14 @@ var cls = Class.extend(/*parentClass, mixins...*/);
 
 The above three class definition are equivalent, it creates a class with a default initialize method.<br />
 
-the initialize method works as the initializer when creating new instances of the class. if you provide a initialize method in the mixin, it will overwrite the default one.<br />
+the initialize method works as the initializer when creating new instances of the class. if you provide a initialize method in the mixin, it will overwrite the default one. Multiple mixins are supported, in such a case, the properties (with same name) of the last mixin wins.<br />
+
+```JavaScript
+var cls = new Class({a: 123}, {a: 456});
+console.log(cls().a); //456
+```
+
+A mixin can be either a function(class), in such case, both static properties and prototype properties are copied accordingly; or a plain object, in such case, all the properties will be copied to the prototype of the generated class.<br />
 
 When you create a sub class of a base class (only functions can be regarded as classes), and you initiated a new instance of the sub class, the framework will guarantee that all the initialize methods of parent classes will be called in such an order that the method of the most top class will be called first.<br />
 
