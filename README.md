@@ -77,6 +77,13 @@ console.log(po.toString());
 
 //{name: 'the name', age: '34', weight:'48', studentNo: '23456789'}
 console.log(so.toString());
+
+console.log(so instanceof Student); //true
+console.log(so instanceof Person); //true
+console.log(so instanceof Animal); //true
+
+console.log(po instanceof Student); //false
+console.log(ao instanceof Person); //false
 ```
 
 ```JavaScript
