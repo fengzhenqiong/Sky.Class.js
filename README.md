@@ -13,7 +13,7 @@ The above three class definition are equivalent, it creates a class with a defau
 
 the initialize method works as the initializer when creating new instances of the class. if you provide a initialize method in the mixin, it will overwrite the default one.<br />
 
-When you create d sub class of a base class (only functions are regarded as classes), and you initiated a new instance of the sub class, the framework will guarantee that all the initialize methods of parent classes will be called in such an order that the method of the most top class will be called first.<br />
+When you create a sub class of a base class (only functions can be regarded as classes), and you initiated a new instance of the sub class, the framework will guarantee that all the initialize methods of parent classes will be called in such an order that the method of the most top class will be called first.<br />
 
 Please note that this mechanism only applies to the initialize method.<br />
 ```JavaScript
@@ -93,6 +93,9 @@ console.log(ao instanceof Person); //false
 ```
 
 if parent is a function, it will be regarded as the parent class of the the new cls generated, or else it will be regarded as a mixin.
+
+# Browser Support
+IE9+ and all other modern browsers
 
 # License
 MIT Licensed
