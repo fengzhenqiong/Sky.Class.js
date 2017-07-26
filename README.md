@@ -3,8 +3,10 @@ This is a simple single inheritance javascript framework
 # Usage
 It's really simple to use it, just add the Sky.Class.js file reference, and then use it like:<br />
 
+```JavaScript
 var cls = new Class();<br />
 var cls = Class.extend();<br />
+```
 
 The above two class definition are equivalent, it creates a class with a default initialize method.<br />
 
@@ -79,7 +81,7 @@ var cls = Class.extend(parent, mixins);
 //The above three class definition are equivalent.
 ```
 
-if parent is a function, it will be regarded as the parent class the the new cls generated, or else it will be regarded as a mixin.
+if parent is a function, it will be regarded as the parent class of the the new cls generated, or else it will be regarded as a mixin.
 
 # License
 MIT Licensed
