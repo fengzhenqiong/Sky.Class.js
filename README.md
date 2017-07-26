@@ -9,5 +9,5 @@ var cls = Class.extend();<br />
 var cls = Class.extend(parent, mixins);<br />
 
 if parent is a function, it will be regarded as the parent class the the new cls generated, or else it will be regarded as a mixin.
-#License
+# License
 MIT Licensed
