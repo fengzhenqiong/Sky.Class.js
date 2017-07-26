@@ -60,9 +60,15 @@ var Student = new Class(Person, {
     return "{name: '"+this.name+"', age: '"+this.age+"', weight:'"+this.weight+"', studentNo: '"+this.studentNo+"'}"
   }
 });
+
 var ao = new Animal({age: 12, weight: 34});
 var po = new Person({age: 23, weight: 67, name: "full name"});
 var so = new Student({age: 34, weight: 48, name: "the name", studentNo: "23456789"});
+
+//You can also use following statements for initializing (the new keyword is optional):
+//var ao = Animal({age: 12, weight: 34});
+//var po = Person({age: 23, weight: 67, name: "full name"});
+//var so = Student({age: 34, weight: 48, name: "the name", studentNo: "23456789"});
 
 ao.breath(); //the Animal breath
 po.breath(); //the Person breath
