@@ -9,7 +9,7 @@ var cls = Class(/*parentClass, mixins...*/);
 var cls = Class.extend(/*parentClass, mixins...*/);
 ```
 
-The above two class definition are equivalent, it creates a class with a default initialize method.<br />
+The above three class definition are equivalent, it creates a class with a default initialize method.<br />
 
 the initialize method works as the initializer when creating new instances of the class. if you provide a initialize method in the mixin, it will overwrite the default one.<br />
 
@@ -90,13 +90,6 @@ console.log(so instanceof Animal); //true
 
 console.log(po instanceof Student); //false
 console.log(ao instanceof Person); //false
-```
-
-```JavaScript
-var cls = new Class(parent, mixins);
-var cls = Class(parent, mixins);
-var cls = Class.extend(parent, mixins);
-//The above three class definition are equivalent.
 ```
 
 if parent is a function, it will be regarded as the parent class of the the new cls generated, or else it will be regarded as a mixin.
