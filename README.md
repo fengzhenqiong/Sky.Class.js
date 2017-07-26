@@ -63,14 +63,18 @@ var Student = new Class(Person, {
 var ao = new Animal({age: 12, weight: 34});
 var po = new Person({age: 23, weight: 67, name: "full name"});
 var so = new Student({age: 34, weight: 48, name: "the name", studentNo: "23456789"});
+
 ao.breath(); //the Animal breath
 po.breath(); //the Person breath
 so.breath(); //the Student breath
 so.goToSchool(); //the Student go to school
+
 //{age: '12', weight:'34'}
 console.log(ao.toString());
+
 //{name: 'full name', age: '23', weight:'67'}
 console.log(po.toString());
+
 //{name: 'the name', age: '34', weight:'48', studentNo: '23456789'}
 console.log(so.toString());
 ```
