@@ -99,7 +99,7 @@ console.log(po instanceof Student); //false
 console.log(ao instanceof Person); //false
 ```
 
-if parent is a function, it will be regarded as the parent class of the the new cls generated, or else it will be regarded as a mixin.
+If parent is a function (*iif the first argument in Class() or Class.extend() is a function*), it will be regarded as the parent class of the the new cls generated, or else it will be regarded as a mixin.
 
 # Browser Support
 IE9+ and all other modern browsers
