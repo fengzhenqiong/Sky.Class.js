@@ -33,16 +33,16 @@
         var prototypeProps = mixinIsFunction ? mixin.prototype : (mixin || {});
         Object.getOwnPropertyNames(prototypeProps)
             .forEach(function (propertyName) {
+                //skip parent initializer to avoid duplicate initialization
+                //parent initializer will be invoked in initializeRecursively
                 if (propertyName == "initialize" && mixinIsFunction) return true;
                 mergeClassProperty(derived.prototype, propertyName, prototypeProps);
             });
     };
     var initializeRecursively = function (instance, childClass, args) {
         var parentClasses = [], parentClass = childClass.parent;
-
         for (; parentClass; parentClass = parentClass.parent)
             parentClasses.unshift(parentClass);
-
         parentClasses.forEach(function (parentClass) {
             parentClass.prototype.initialize.apply(instance, args);
         });
@@ -57,22 +57,17 @@
             childClass.prototype.initialize.apply(newInstance, arguments);
             return Object.freeze(newInstance);
         };
-        childClass.prototype.initialize = defaultInitializer;
-
         if (typeof parentClass === "function") {
             childClass.prototype = Object.create(parentClass.prototype);
-            childClass.prototype.initialize = defaultInitializer;
             mergeClassProperties(childClass, parentClass);
             childClass.parent = Object.freeze(parentClass);
         }
-        childClass.prototype.constructor = childClass;
-
-        if (arguments.length > 0) {
-            var depIndex = typeof parentClass === "function" ? 1 : 0;
-            for (var index = depIndex; index < arguments.length; index++)
-                mergeClassProperties(childClass, arguments[index]);
-        }
-
+        childClass.prototype.initialize = defaultInitializer;
+        
+        var depIndex = typeof parentClass === "function" ? 1 : 0;
+        for (var index = depIndex; index < arguments.length; index++)
+            mergeClassProperties(childClass, arguments[index]);
+        
         return Object.freeze(childClass);
     };
 
