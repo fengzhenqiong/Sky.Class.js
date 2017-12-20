@@ -4,72 +4,54 @@
 //      var derived = new Class(/*parentClass, mixins...*/);
 //      var derived = Class(/*parentClass, mixins...*/);
 //      var derived = Class.extend(/*parentClass, mixins...*/);
-(function (global, factory) {
+(function (name, global, factory) {
     if (typeof define === "function" && define.amd) define(factory);
     else if (typeof module === "object") module.exports = factory();
-    else global.Class = factory();
-})(this, function () {
-    "use strict";
-
-    function Class(parentClass/*, mixin...*/) {
+    else global[name] = factory();
+})("Class", this, function () {
+    function Class(/*parentClass, mixins...*/) {
         return Class.extend.apply(Class, arguments);
     }
-
-    var mergeClassProperty = function (target, propertyName, source) {
-        var descriptor = Object.getOwnPropertyDescriptor(source, propertyName);
+    var mergeSingleProperty = function (target, propName, source) {
+        var descriptor = Object.getOwnPropertyDescriptor(source, propName);
         if (descriptor && descriptor.enumerable) {
             descriptor.configurable = descriptor.writable = true;
-            Object.defineProperty(target, propertyName, descriptor);
+            Object.defineProperty(target, propName, descriptor);
         }
-    }
-    var mergeClassProperties = function privateMerge(derived, mixin) {
-        var staticProps = typeof mixin === "function" ? mixin : {};
-        Object.getOwnPropertyNames(staticProps)
-            .forEach(function (propertyName) {
-                mergeClassProperty(derived, propertyName, staticProps);
-            });
-
-        var mixinIsFunction = typeof mixin === "function";
-        var prototypeProps = mixinIsFunction ? mixin.prototype : (mixin || {});
-        Object.getOwnPropertyNames(prototypeProps)
-            .forEach(function (propertyName) {
-                //skip parent initializer to avoid duplicate initialization
-                //parent initializer will be invoked in initializeRecursively
-                if (propertyName == "initialize" && mixinIsFunction) return true;
-                mergeClassProperty(derived.prototype, propertyName, prototypeProps);
-            });
     };
-    var initializeRecursively = function (instance, childClass, args) {
-        var parentClasses = [], parentClass = childClass.parent;
-        for (; parentClass; parentClass = parentClass.parent)
-            parentClasses.unshift(parentClass);
-        parentClasses.forEach(function (parentClass) {
-            parentClass.prototype.initialize.apply(instance, args);
+    var mergeSourceProperties = function privateMerge(derived, mixin) {
+        var mixinIsFunction = typeof mixin === "function";
+        var protoProps = mixinIsFunction ? mixin.prototype : (mixin || {});
+        Object.getOwnPropertyNames(protoProps).forEach(function (propName) {
+            if (propName == "initialize" && mixinIsFunction) return true;
+            mergeSingleProperty(derived.prototype, propName, protoProps);
         });
-    }
-    var defaultInitializer = function defaultInitializer() { };
-
+    };
+    var runParentInitializers = function (thisInstance, thisClass, args) {
+        var allParentClasses = [], thisParentClass = thisClass.parent;
+        for (; thisParentClass; thisParentClass = thisParentClass.parent)
+            allParentClasses.unshift(thisParentClass);
+        allParentClasses.forEach(function (thisParentClass, index) {
+            thisParentClass.prototype.initialize.apply(thisInstance, args);
+        });
+    };
+    var defaultClassInitializer = function defaultClassInitializer() { };
     Class.extend = function (parentClass/*, mixin...*/) {
-        //Child class supports both new keyword and direct method call
-        var childClass = function childConstructor() {
-            var newInstance = Object.create(childClass.prototype);
-            initializeRecursively(newInstance, childClass, arguments);
-            childClass.prototype.initialize.apply(newInstance, arguments);
-            return Object.freeze(newInstance);
+        var childClass = function childClassConstructor() {
+            var childInstance = Object.create(childClass.prototype);
+            runParentInitializers(childInstance, childClass, arguments);
+            childClass.prototype.initialize.apply(childInstance, arguments);
+            return Object.freeze(childInstance);
         };
         if (typeof parentClass === "function") {
             childClass.prototype = Object.create(parentClass.prototype);
-            mergeClassProperties(childClass, parentClass);
-            childClass.parent = Object.freeze(parentClass);
+            childClass.parent = Object.freeze(parentClass/*immutable*/);
         }
-        childClass.prototype.initialize = defaultInitializer;
-        
-        var depIndex = typeof parentClass === "function" ? 1 : 0;
-        for (var index = depIndex; index < arguments.length; index++)
-            mergeClassProperties(childClass, arguments[index]);
-        
-        return Object.freeze(childClass);
-    };
+        childClass.prototype.initialize = defaultClassInitializer;
+        for (var dpdtIndex = 0; dpdtIndex < arguments.length; dpdtIndex++)
+            mergeSourceProperties(childClass, arguments[dpdtIndex]);
 
-    return Object.freeze(Class);
+        return childClass = Object.freeze(childClass);
+    };
+    return Object.freeze(Class/*immutable*/);
 });
