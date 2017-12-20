@@ -36,7 +36,7 @@
         });
     };
     var defaultClassInitializer = function defaultClassInitializer() { };
-    Class.extend = function (/*parentClass, mixin...*/) {
+    Class.extend = function (/*parentClass, mixins...*/) {
         var childClass = function childClassConstructor() {
             var childInstance = Object.create(childClass.prototype);
             runParentInitializers(childInstance, childClass, arguments);
