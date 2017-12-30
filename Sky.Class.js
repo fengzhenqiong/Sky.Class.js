@@ -9,7 +9,7 @@
     else if (typeof module === "object") module.exports = factory();
     else global[name] = factory();
 })("Class", this, function () {
-    function Class(/*parentClass, mixins...*/) {
+    function Class(parentClass/*, mixins...*/) {
         return Class.extend.apply(Class, arguments);
     }
     var mergeSingleProperty = function (target, propName, source) {
@@ -36,7 +36,7 @@
         });
     };
     var defaultClassInitializer = function defaultClassInitializer() { };
-    Class.extend = function (/*parentClass, mixins...*/) {
+    Class.extend = function (parentClass/*, mixins...*/) {
         var childClass = function childClassConstructor() {
             var childInstance = Object.create(childClass.prototype);
             runParentInitializers(childInstance, childClass, arguments);
