@@ -1,4 +1,4 @@
-﻿//A Simple JavaScript Single Inheritance Framework
+﻿﻿//A Simple JavaScript Single Inheritance Framework
 //As for IE, only IE9(inclusive)+ versions are supported by this library
 //@Author: Sky Feng(im.sky@foxmail.com), MIT Licensed.
 //      var derived = new Class(/*parentClass, mixins...*/);
@@ -7,7 +7,9 @@
 (function (name, global, factory) {
     if (typeof define === "function" && define.amd) define(factory);
     else if (typeof module === "object") module.exports = factory();
-    else global[name] = factory();
+    //uncomment this line if not support re-entry or duplicates
+    //else if (global[name]) throw new Error("Class already loaded!");
+    else global[name] = global[name] || factory();
 })("Class", this, function () {
     function Class(parentClass/*, mixins...*/) {
         return Class.extend.apply(Class, arguments);
@@ -23,7 +25,7 @@
         var mixinIsFunction = typeof mixin === "function";
         var protoProps = mixinIsFunction ? mixin.prototype : (mixin || {});
         Object.getOwnPropertyNames(protoProps).forEach(function (propName) {
-            if (propName == "initialize" && mixinIsFunction) return true;
+            if (propName === "initialize" && mixinIsFunction) return true;
             mergeSingleProperty(derived.prototype, propName, protoProps);
         });
     };
