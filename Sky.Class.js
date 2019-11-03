@@ -23,8 +23,9 @@
     };
     var mergeSourceProperties = function privateMerge(derived, mixin) {
         var mixinIsFunction = typeof mixin === "function";
-        var protoProps = mixinIsFunction ? mixin.prototype : (mixin || {});
+        var protoProps = (mixinIsFunction ? mixin.prototype : mixin) || {};
         Object.getOwnPropertyNames(protoProps).forEach(function (propName) {
+            if (typeof protoProps[propName] !== "function") return true;
             if (propName === "initialize" && mixinIsFunction) return true;
             mergeSingleProperty(derived.prototype, propName, protoProps);
         });
@@ -32,8 +33,8 @@
     var runParentInitializers = function (thisInstance, thisClass, args) {
         var allParentClasses = [], thisParentClass = thisClass.parent;
         for (; thisParentClass; thisParentClass = thisParentClass.parent)
-            allParentClasses.unshift(thisParentClass);
-        allParentClasses.forEach(function (thisParentClass, index) {
+            allParentClasses.push(thisParentClass);
+        allParentClasses.reverse().forEach(function (thisParentClass, i) {
             thisParentClass.prototype.initialize.apply(thisInstance, args);
         });
     };
