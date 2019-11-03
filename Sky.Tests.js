@@ -1,11 +1,24 @@
 var Class = require("./Sky.Class.js");
 
 var cls = new Class({ a: 123 }, { a: 456 });
-console.log(cls().a); //456
+console.log(cls().a); // undefined, as non-functional properties will not be merged to prototypes
+
+// in order to add non-functional properties, we need to add non-functional properties to cunstructor
+cls = new Class(
+    {
+        initialize: function () {
+            this.a = 123;
+        }
+    },
+    {
+        initialize: function () {
+            this.a = 456;
+        }
+    }
+);
+console.log(new cls().a); // 456
 
 var Animal = new Class({
-    age: "",
-    weight: 0,
     initialize: function (options) {
         this.age = options.age;
         this.weight = options.weight;
@@ -19,7 +32,6 @@ var Animal = new Class({
 });
 
 var Person = new Class(Animal, { //or var Person = Class.extend(Animal, {
-    name: "",
     initialize: function (options) {
         this.name = options.name;
     },
@@ -32,7 +44,6 @@ var Person = new Class(Animal, { //or var Person = Class.extend(Animal, {
 });
 
 var Student = new Class(Person, {
-    studentNo: "",
     initialize: function (options) {
         this.studentNo = options.studentNo;
     },
