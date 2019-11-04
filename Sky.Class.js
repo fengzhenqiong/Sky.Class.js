@@ -9,7 +9,7 @@
     else if (typeof module === "object") module.exports = factory();
     //uncomment this line if not support re-entry or duplicates
     //else if (global[name]) throw new Error("Class already loaded!");
-    else global[name] = global[name] || factory();
+    else global[name] = global[name] || factory(); //use existing one
 })("Class", this, function () {
     function Class(parentClass/*, mixins...*/) {
         return Class.extend.apply(Class, arguments);
@@ -51,9 +51,9 @@
             childClass.parent = Object.freeze(parentClass/*immutable*/);
         }
         childClass.prototype.initialize = defaultClassInitializer;
-        for (var dpdtIndex = 0; dpdtIndex < arguments.length; dpdtIndex++)
+        for (var dpdtIndex = 0; dpdtIndex < arguments.length; ++dpdtIndex)
             mergeSourceProperties(childClass, arguments[dpdtIndex]);
-
+        
         return childClass = Object.freeze(childClass);
     };
     return Object.freeze(Class/*immutable*/);
