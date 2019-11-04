@@ -11,7 +11,7 @@
     //else if (global[name]) throw new Error("Class already exists!");
     else global[name] = global[name] || factory(); //re-importable
 })("Class", this, function () {
-    function Class(parentClass/*, mixins...*/) {
+    function Class(/*parentClass, mixins...*/) {
         return Class.extend.apply(Class, arguments);
     }
     var mergeProperty = function (target, propName, source) {
