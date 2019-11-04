@@ -13,15 +13,15 @@ The above three class definition are equivalent, it creates a class with a defau
 
 the initialize method works as the initializer when creating new instances of the class. if you provide a initialize method in the mixin, it will overwrite the default one. Multiple mixins are supported, in such a case, the properties (with same name) of the last mixin wins.<br />
 
-```JavaScript
-var cls = new Class({a: 123}, {a: 456});
-console.log(cls().a); //undefined, refer to *Note of non-functional properties* section.
-```
-
 A mixin can be either a function(class), in such case, only prototype *(non-functional)* properties are copied accordingly(except the prototype.initialize method as it works as the initializer, and parent initializer will be called automatically as described later); or a plain object, in such case, all the *(non-functional)* properties will be copied to the prototype of the generated class.<br />
 
 ## Note of non-functional properties
 *You should put all NON-FUNCTIONAL properties in the constructor directly, instead of putting them in the mixins/parent classes as properties, as this will cause the REFERENCE-PROPERTY-OVERWRITTEN problems between different class object instances sharing same prototype-chain.*
+
+```JavaScript
+var cls = new Class({a: 123}, {a: 456});
+console.log(cls().a); //undefined, refer to *Note of non-functional properties* section.
+```
 
 ```JavaScript
 // in order to add non-functional properties, we need to add non-functional properties to cunstructor
