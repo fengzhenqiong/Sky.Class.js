@@ -14,6 +14,7 @@
     function Class(/*parentClass, mixins...*/) {
         return Class.extend.apply(Class, arguments);
     }
+    Class.prototype.__proto__ = Function.prototype; //instanceof
     var mergeProperty = function (target, propName, source) {
         var descriptor = Object.getOwnPropertyDescriptor(source, propName);
         if (descriptor && descriptor.enumerable) {
@@ -57,7 +58,7 @@
         childClass.prototype.initialize = defaultClassInitializer;
         for (var _flags = {}, idx = arguments.length - 1; idx >= 0; --idx)
             mergeProperties(childClass, arguments[idx], _flags);
-        childClass.__proto__ = Object.create(Class.prototype); //Class
+        childClass.__proto__ = Object.freeze(Class.prototype); //Class
         return childClass = Object.freeze(childClass); /*immutable*/
     };
     return Object.freeze(Class /*immutable*/);
