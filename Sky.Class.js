@@ -7,9 +7,9 @@
 (function (name, global, factory) {
     if (typeof define === "function" && define.amd) define(factory);
     else if (typeof module === "object") module.exports = factory();
-    //uncomment this line to make this library NOT re-importable
+    //uncomment this line to make this library NOT RE-IMPORTABLE
     //else if (global[name]) throw new Error("Class already exists!");
-    else global[name] = global[name] || factory(); //re-importable
+    else global[name] = global[name] || factory(); //RE-IMPORTABLE
 })("Class", this, function () {
     function Class(/*parentClass, mixins...*/) {
         return Class.extend.apply(Class, arguments);
@@ -41,22 +41,24 @@
         });
     };
     var defaultClassInitializer = function defaultClassInitializer() { };
-    Class.extend = function (parentClass/*, mixins...*/) {
+    Class.extend = function (parentClass /*, mixins...*/) {
         var childClass = function childClassConstructor() {
             var childInstance = Object.create(childClass.prototype);
             runParentInitializers(childInstance, childClass, arguments);
             childClass.prototype.initialize.apply(childInstance, arguments);
-            return Object.freeze(childInstance); /*immutable*/
+            return childInstance; /*CLASS OBJECTS NEED TO BE MUTABLE*/
         };
         if (typeof parentClass === "function") {
+            if (!(parentClass instanceof Class)) /* NO MIXED USE */
+                throw new Error("Only support Classes as parent Classes!");
             childClass.prototype = Object.create(parentClass.prototype);
             childClass.parent = Object.freeze(parentClass /*immutable*/);
         }
         childClass.prototype.initialize = defaultClassInitializer;
         for (var _flags = {}, idx = arguments.length - 1; idx >= 0; --idx)
             mergeProperties(childClass, arguments[idx], _flags);
-
+        childClass.__proto__ = Object.create(Class.prototype); //Class
         return childClass = Object.freeze(childClass); /*immutable*/
     };
-    return Object.freeze(Class/*immutable*/);
+    return Object.freeze(Class /*immutable*/);
 });
