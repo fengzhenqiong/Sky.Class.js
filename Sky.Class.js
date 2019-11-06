@@ -15,7 +15,7 @@
         return Class.extend.apply(Class, arguments);
     }
     Class.prototype.__proto__ = Function.prototype; //instanceof
-    var mergeProperty = function (target, propName, source) {
+    var mergeSingleProperty = function (target, propName, source) {
         var descriptor = Object.getOwnPropertyDescriptor(source, propName);
         if (descriptor && descriptor.enumerable) {
             descriptor.configurable = descriptor.writable = true;
@@ -29,16 +29,16 @@
             if (pName === "initialize" && mixinIsFunction) return true;
             if (typeof protoProps[pName] !== "function") return true;
             if (Object.getOwnPropertyDescriptor(_flags, pName)) return true;
-            mergeProperty(derived.prototype, pName, protoProps);
+            mergeSingleProperty(derived.prototype, pName, protoProps);
             _flags[pName] = true; // use cache to improve performances
         });
     };
     var runParentInitializers = function (thisInstance, thisClass, args) {
-        var allParentClasses = [], thisParentClass = thisClass.parent;
-        for (; thisParentClass; thisParentClass = thisParentClass.parent)
-            allParentClasses.push(thisParentClass);
-        allParentClasses.reverse().forEach(function (thisParentClass, i) {
-            thisParentClass.prototype.initialize.apply(thisInstance, args);
+        var allParentClasses = [], chainParentClass = thisClass.parent;
+        for (; chainParentClass; chainParentClass = chainParentClass.parent)
+            allParentClasses.push(chainParentClass);
+        allParentClasses.reverse().forEach(function (tempParentClass) {
+            tempParentClass.prototype.initialize.apply(thisInstance, args);
         });
     };
     var defaultClassInitializer = function defaultClassInitializer() { };
