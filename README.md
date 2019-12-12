@@ -1,7 +1,7 @@
 # Sky.Class.js
 This is a simple single (prototype) inheritance javascript framework
 # Usage
-It's really simple to use it, just add the Sky.Class.js file reference, and then use it like:<br />
+It's really simple to use, just add the Sky.Class.js file reference, and then use it like:<br />
 
 ```JavaScript
 var cls = new Class(/*parentClass, mixins...*/);
@@ -20,24 +20,19 @@ A mixin can be either a function(class), in such case, only prototype **(non-fun
 
 ```JavaScript
 var cls = new Class({a: 123}, {a: 456});
-console.log(cls().a); //undefined, refer to Note of non-functional properties section.
+//undefined, refer to Note of non-functional properties section.
+console.log(cls().a);
 ```
 
 ```JavaScript
-// in order to add non-functional properties, we need to add non-functional properties to cunstructor
+// in order to add non-functional properties,
+// we need to add non-functional properties to cunstructor
 cls = new Class(
-    {
-        initialize: function () {
-            this.a = 123;
-        }
-    },
-    {
-        initialize: function () {
-            this.a = 456;
-        }
-    }
+    { initialize: function () { this.a = 123; } },
+    { initialize: function () { this.a = 456; } }
 );
-console.log(new cls().a); // 456, as the last initializer wins
+// 456, as the last initializer wins
+console.log(new cls().a); 
 ```
 
 When you create a sub class of a base class (only functions can be regarded as classes), and you initiated a new instance of the sub class, the framework will guarantee that all the initialize methods of parent classes will be called in such an order that the method of the most top class will be called first.<br />

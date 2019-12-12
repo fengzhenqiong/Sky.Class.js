@@ -1,0 +1,30 @@
+{
+  "name": "sky.class",
+  "version": "1.0.0",
+  "description": "A simple JavaScript single prototype inheritance library.",
+  "main": "Sky.Class.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fengzhenqiong/sky.class.js.git"
+  },
+  "keywords": [
+    "ES5",
+    "JavaScript",
+    "OOP",
+    "Prototype",
+    "JS"
+  ],
+  "files": [
+    "LICENSE",
+    "README.md",
+    "Sky.Class.d.ts",
+    "Sky.Class.js",
+    "dist/"
+  ],
+  "author": "im.sky@foxmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/fengzhenqiong/sky.class.js#readme",
+  "bugs": {
+    "url": "https://github.com/fengzhenqiong/sky.class.js/issues"
+  }
+}

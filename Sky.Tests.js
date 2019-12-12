@@ -1,20 +1,12 @@
-var Class = require("./Sky.Class.js");
+var Class = require("./dist/Sky.Class.js");
 
 var cls = new Class({ a: 123 }, { a: 456 });
 console.log(cls().a); // undefined, as non-functional properties will not be merged to prototypes
 
 // in order to add non-functional properties, we need to add non-functional properties to cunstructor
 cls = new Class(
-    {
-        initialize: function () {
-            this.a = 123;
-        }
-    },
-    {
-        initialize: function () {
-            this.a = 456;
-        }
-    }
+    { initialize: function () { this.a = 123; } },
+    { initialize: function () { this.a = 456; } }
 );
 console.log(new cls().a); // 456
 
