@@ -1,7 +1,7 @@
 # Sky.Class.js
 This is a simple single (prototype) inheritance javascript framework with which you can dynamically generate classes at runtime.
 # Usage
-It's really simple to use, just add the Sky.Class.js file reference, and then use it like:<br />
+It's really simple to use, just add the Sky.Class.min.js file reference, and then use it like:<br />
 
 ```JavaScript
 var cls = new Class(/*parentClass, mixins...*/);
@@ -9,11 +9,13 @@ var cls = Class(/*parentClass, mixins...*/);
 var cls = Class.extend(/*parentClass, mixins...*/);
 ```
 
-The above three class definitions are equivalent, it creates a class with a default initialize method.<br />
+The above three class definitions are equivalent, it creates a class with a default ```initialize``` method.<br />
 
-the initialize method works as the constructor when creating new instances of the class. If you provide a initialize method in the mixin, it will overwrite the default one. Multiple mixins are supported, in such a case, the properties (with same name) of the last mixin wins.<br />
+the ```initialize``` method works as the ```constructor``` when creating new instances of the class. If you provide a ```initialize``` method in the **mixin**, it will overwrite the default one. Multiple mixins are supported, in such a case, the properties (with same name) of the last mixin wins.<br />
 
-A mixin can be either a function(class), in such case, only prototype **(functional)** properties are copied accordingly (except the prototype.initialize method as it works as the constructor, and parent constructor will be called automatically as described later); or a plain object, in such case, all the **(functional)** properties will be copied to the prototype of the generated class.<br />
+A mixin can be either a function, in such case, only ```prototype``` **(functional)** properties are copied accordingly (except the ```prototype.initialize``` method as it works as the constructor, and parent constructor will be called automatically as described later); or a plain object, in such case, all the **(functional)** properties will be copied to the prototype of the generated class.<br />
+
+A Class is a function, but a function is not sure a Class, and only a Class can be used as a parent Class when you defining new Classes, which means you can only sub-classing Classes. 
 
 ## Note of non-functional properties
 *You should put all NON-FUNCTIONAL properties in the constructor directly, instead of putting them in the mixins/parent classes as properties, as this will cause the REFERENCE-PROPERTY-OVERWRITTEN problems between different class object instances sharing same prototype-chain.*
@@ -35,9 +37,9 @@ cls = new Class(
 console.log(new cls().a); 
 ```
 
-When you create a sub class of a base class (only functions can be regarded as classes), and you initiated a new instance of the sub class, the framework will guarantee that all the initialize methods of parent classes will be called in such an order that the method of the most top class will be called first.<br />
+When you create a sub class of a base class, and you initiated a new instance of the sub class, the framework will guarantee that all the initialize methods of parent classes will be called in such an order that the ```initialize``` method of the most top class will be called first.<br />
 
-Please note that this mechanism only applies to the initialize method.<br />
+Please note that this mechanism only applies to the ```initialize``` method.<br />
 ```JavaScript
 var Animal = new Class({
   initialize: function(options){
@@ -109,8 +111,6 @@ console.log(so instanceof Animal); //true
 console.log(po instanceof Student); //false
 console.log(ao instanceof Person); //false
 ```
-
-If parent is a function (**iif the first argument in Class() or Class.extend() is a function**), it will be regarded as the parent class of the the new cls generated, or else it will be regarded as a mixin.
 
 ```JavaScript
 var C1 = Class({ initialize: function () { console.log("C1 Initializer"); } });

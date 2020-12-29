@@ -34,13 +34,17 @@
         });
     };
     var runParentInitializers = function (thisInstance, thisClass, args) {
-        var allParentClasses = [], chainParentClass = thisClass.parent;
-        for (; chainParentClass; chainParentClass = chainParentClass.parent)
-            allParentClasses.push(chainParentClass);
-        allParentClasses.reverse().forEach(function (tempParentClass) {
+        var allParentClasses = thisClass._parents || [];
+        allParentClasses.forEach(function (tempParentClass) {
             tempParentClass.prototype.initialize.apply(thisInstance, args);
         });
     };
+    var getAllParents = function getParentClasses(theParentClass) {
+        var allParentClasses = [];
+        for (; theParentClass; theParentClass = theParentClass._parent)
+            allParentClasses.push(theParentClass);
+        return allParentClasses.reverse();
+    }
     var defaultClassInitializer = function defaultClassInitializer() { };
     Class.extend = function (parentClass /*, mixins...*/) {
         var childClass = function childClassConstructor() {
@@ -53,7 +57,8 @@
             if (!(parentClass instanceof Class)) /* NO MIXED USE */
                 throw new Error("Only support Classes as parent Classes!");
             childClass.prototype = Object.create(parentClass.prototype);
-            childClass.parent = Object.freeze(parentClass /*immutable*/);
+            childClass._parents = Object.freeze(getAllParents(parentClass));
+            childClass._parent = Object.freeze(parentClass /*immutable*/);
         }
         childClass.prototype.initialize = defaultClassInitializer;
         for (var _flags = {}, idx = arguments.length - 1; idx >= 0; --idx)
